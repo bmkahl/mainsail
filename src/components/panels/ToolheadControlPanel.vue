@@ -7,6 +7,39 @@
         card-class="toolhead-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
         <template #buttons>
+            <v-menu  :offset-y="true" :close-on-content-click="false" left>
+                <template #activator="{ on, attrs }">
+                    <v-btn icon tile v-bind="attrs" v-on="on">
+                        <v-icon>{{ ToolHeadIcon }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-list dense>
+                    <!-- MET175 -->
+                    <v-list-item >
+                        <v-tooltip top :disabled="printerIsPrintingOnly" color="secondary">
+                            <template #activator="{ on }">
+                                <macro-button
+                                    :macro="MET175"
+                                    :alias="$t('MET175')"
+                                    :disabled="printerIsPrintingOnly"
+                                    color="#272727" />
+                            </template>
+                        </v-tooltip>
+                    </v-list-item>
+                    <!-- MET285 -->
+                    <v-list-item >
+                        <v-tooltip top :disabled="printerIsPrintingOnly" color="secondary">
+                            <template #activator="{ on }">
+                                <macro-button
+                                    :macro="MET285"
+                                    :alias="$t('MET285')"
+                                    :disabled="printerIsPrintingOnly"
+                                    color="#272727" />
+                            </template>
+                        </v-tooltip>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
             <v-menu v-if="showButtons" left offset-y :close-on-content-click="false" class="pa-0">
                 <template #activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" :disabled="['printing'].includes(printer_state)" v-on="on">
@@ -126,6 +159,7 @@ import Panel from '@/components/ui/Panel.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
 import ZoffsetControl from '@/components/panels/ToolheadControls/ZoffsetControl.vue'
 import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown, mdiRestore } from '@mdi/js'
+import ToolHeadIcon from '@/assets/Meteor-01.svg';
 
 @Component({
     components: {
@@ -139,6 +173,7 @@ import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown,
     },
 })
 export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin) {
+    ToolHeadIcon = ToolHeadIcon
     mdiDotsVertical = mdiDotsVertical
     mdiEngineOff = mdiEngineOff
     mdiGamepad = mdiGamepad
@@ -148,6 +183,18 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get controlStyle(): string {
         return this.$store.state.gui.control.style ?? 'bars'
+    }
+
+    get MET175(): PrinterStateMacro | undefined {
+        const macros = ['MET175']
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
+    }
+
+    get MET285(): PrinterStateMacro | undefined {
+        const macros = ['MET285']
+
+        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
     }
 
     get actionButton(): string {
