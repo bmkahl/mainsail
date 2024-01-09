@@ -10,7 +10,8 @@
             <v-menu  :offset-y="true" :close-on-content-click="false" left>
                 <template #activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" v-on="on">
-                        <v-icon>{{ ToolHeadIcon }}</v-icon>
+                        <span class="primary--text">{{ $t('MET175') }}</span>
+                        <v-icon /><img height="45" src="@/assets/Meteor-01.svg" /><v-icon />
                     </v-btn>
                 </template>
                 <v-list dense>
