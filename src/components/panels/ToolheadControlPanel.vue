@@ -132,6 +132,21 @@
                 command="M220"
                 attribute-name="S" />
         </v-container>
+        <!-- EXTRUSION FACTOR SLIDER -->
+        <v-divider v-if="showExtrusionFactor" />
+        <v-container v-if="showExtrusionFactor">
+            <tool-slider
+                :label="$t('Panels.ExtruderControlPanel.ExtrusionFactor')"
+                :icon="mdiPrinter3dNozzleOutline"
+                :target="extrudeFactor"
+                :min="1"
+                :max="200"
+                :multi="100"
+                :step="1"
+                :has-input-field="true"
+                command="M221"
+                attribute-name="S" />
+        </v-container>
     </panel>
 </template>
 
@@ -146,7 +161,8 @@ import MoveToControl from '@/components/panels/ToolheadControls/MoveToControl.vu
 import Panel from '@/components/ui/Panel.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
 import ZoffsetControl from '@/components/panels/ToolheadControls/ZoffsetControl.vue'
-import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown, mdiRestore } from '@mdi/js'
+import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown, mdiRestore, mdiPrinter3dNozzleOutline} from '@mdi/js'
+import ExtruderMixin from '@/components/mixins/extruder'
 
 @Component({
     components: {
@@ -166,6 +182,7 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
     mdiSpeedometer = mdiSpeedometer
     mdiRestore = mdiRestore
     mdiMenuDown = mdiMenuDown
+    mdiPrinter3dNozzleOutline = mdiPrinter3dNozzleOutline
 
     get controlStyle(): string {
         return this.$store.state.gui.control.style ?? 'bars'
@@ -177,6 +194,10 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get speedFactor(): number {
         return this.$store.state.printer?.gcode_move?.speed_factor ?? 1
+    }
+
+    get extrudeFactor() {
+        return this.$store.state.printer?.gcode_move?.extrude_factor ?? 1
     }
 
     get isPrinting() {
@@ -205,6 +226,10 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get showSpeedFactor(): boolean {
         return this.$store.state.gui.view.toolhead.showSpeedFactor ?? true
+    }
+
+    get showExtrusionFactor(): boolean {
+        return this.$store.state.gui.view.toolhead.showExtrusionFactor ?? true
     }
 }
 </script>

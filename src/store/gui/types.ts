@@ -193,6 +193,7 @@ export interface GuiState {
             showControl: boolean
             showZOffset: boolean
             showSpeedFactor: boolean
+            showExtrusionFactor: boolean
         }
         webcam: {
             currentCam: {

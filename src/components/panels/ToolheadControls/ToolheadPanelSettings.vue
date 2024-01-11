@@ -41,6 +41,13 @@
                     hide-details
                     :label="$t('Panels.ToolheadControlPanel.SpeedFactor')" />
             </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
+                    v-model="showExtrusionFactor"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.ToolheadControlPanel.ExtrusionFactor')" />
+            </v-list-item>
         </v-list>
     </v-menu>
 </template>
@@ -93,6 +100,14 @@ export default class ToolheadPanelSettings extends Mixins(BaseMixin) {
 
     set showSpeedFactor(newVal: boolean) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.toolhead.showSpeedFactor', value: newVal })
+    }
+
+    get showExtrusionFactor(): boolean {
+        return this.$store.state.gui.view.toolhead.showExtrusionFactor ?? true
+    }
+
+    set showExtrusionFactor(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.toolhead.showExtrusionFactor', value: newVal })
     }
 }
 </script>

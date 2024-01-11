@@ -35,7 +35,7 @@
                     <v-slider
                         v-model="consoleHeightTmp"
                         hide-details
-                        :min="200"
+                        :min="100"
                         :max="900"
                         :step="10"
                         :label="consoleHeightTmp + 'px'"
