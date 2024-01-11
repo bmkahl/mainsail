@@ -7,37 +7,24 @@
         card-class="toolhead-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
         <template #buttons>
-            <v-menu  :offset-y="true" :close-on-content-click="false" left>
+            <v-menu :offset-y="true" :close-on-content-click="false" left>
                 <template #activator="{ on, attrs }">
-                    <v-btn icon tile v-bind="attrs" v-on="on">
-                        <span class="primary--text">{{ $t('MET175') }}</span>
-                        <v-icon /><img height="45" src="@/assets/Meteor-01.svg" /><v-icon />
+                    <v-btn
+                        small
+                        v-bind="attrs"
+                        class="px-0"
+                        style="min-width: 32px; border-top-left-radius: 0; border-bottom-left-radius: 0"
+                        v-on="on">
+                        <v-icon /><img height="40" src="@/assets/Meteor-01.svg" /><v-icon />
+                        <v-icon>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
                 <v-list dense>
-                    <!-- MET175 -->
-                    <v-list-item >
-                        <v-tooltip top :disabled="printerIsPrintingOnly" color="secondary">
-                            <template #activator="{ on }">
-                                <macro-button
-                                    :macro="MET175"
-                                    :alias="$t('MET175')"
-                                    :disabled="printerIsPrintingOnly"
-                                    color="#272727" />
-                            </template>
-                        </v-tooltip>
+                    <v-list-item :disabled="printerIsPrintingOnly">
+                        <v-btn small style="width: 100%" @click="doSend('MET175')">MET175</v-btn>
                     </v-list-item>
-                    <!-- MET285 -->
-                    <v-list-item >
-                        <v-tooltip top :disabled="printerIsPrintingOnly" color="secondary">
-                            <template #activator="{ on }">
-                                <macro-button
-                                    :macro="MET285"
-                                    :alias="$t('MET285')"
-                                    :disabled="printerIsPrintingOnly"
-                                    color="#272727" />
-                            </template>
-                        </v-tooltip>
+                    <v-list-item :disabled="printerIsPrintingOnly">
+                        <v-btn small style="width: 100%" @click="doSend('MET285')">MET285</v-btn>
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -160,7 +147,6 @@ import Panel from '@/components/ui/Panel.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
 import ZoffsetControl from '@/components/panels/ToolheadControls/ZoffsetControl.vue'
 import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown, mdiRestore } from '@mdi/js'
-import ToolHeadIcon from '@/assets/Meteor-01.svg';
 
 @Component({
     components: {
@@ -174,7 +160,6 @@ import ToolHeadIcon from '@/assets/Meteor-01.svg';
     },
 })
 export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin) {
-    ToolHeadIcon = ToolHeadIcon
     mdiDotsVertical = mdiDotsVertical
     mdiEngineOff = mdiEngineOff
     mdiGamepad = mdiGamepad
@@ -184,18 +169,6 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get controlStyle(): string {
         return this.$store.state.gui.control.style ?? 'bars'
-    }
-
-    get MET175(): PrinterStateMacro | undefined {
-        const macros = ['MET175']
-
-        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
-    }
-
-    get MET285(): PrinterStateMacro | undefined {
-        const macros = ['MET285']
-
-        return this.macros.find((macro: PrinterStateMacro) => macros.includes(macro.name.toUpperCase()))
     }
 
     get actionButton(): string {
