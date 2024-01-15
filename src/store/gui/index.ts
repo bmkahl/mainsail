@@ -268,7 +268,6 @@ export const getDefaultState = (): GuiState => {
                 showControl: true,
                 showZOffset: true,
                 showSpeedFactor: true,
-                showExtrusionFactor: true,
             },
             webcam: {
                 currentCam: {

@@ -73,9 +73,7 @@
             "SAVE_CONFIG": "SAVE CONFIG",
             "Uploading": "Uploading",
             "UploadOfFileSuccessful": "Upload of {file} successful!",
-            "UploadPrint": "Upload & Print",
-            "CustomLayout": "Custom Layout",
-            "RecomendedLayout": "Recomended Layout"
+            "UploadPrint": "Upload & Print"
         },
         "TopCornerMenu": {
             "Cancel": "Cancel",
@@ -544,7 +542,7 @@
             "Extrude": "Extrude",
             "ExtruderControl": "Extruder Control",
             "ExtruderTempTooLow": "Extruder temp. <",
-            "ExtrusionFactor": "Extrusion Factor",
+            "ExtrusionFactor": "Extrusion factor",
             "ExtrusionFeedrate": "Extrusion Feedrate",
             "FilamentLength": "Filament Length",
             "FirmwareRetraction": "Firmware Retraction",
@@ -747,7 +745,6 @@
             "Relative": "relative",
             "SettingsInterfaceControl": "Settings > Interface > Control",
             "SpeedFactor": "Speed factor",
-            "ExtrusionFactor": "Extrusion Factor",
             "ZOffset": "Z-Offset",
             "ZTilt": "Z-Tilt"
         },
