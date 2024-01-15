@@ -554,7 +554,7 @@
                 "UnretractExtraLength": "Unretract Extra Length",
                 "UnretractSpeed": "Unretract Speed"
             },
-            "Headline": "Extruder",
+            "Headline": "Tool Head",
             "LoadFilament": "Load Filament",
             "PressureAdvance": "Pressure Advance",
             "PressureAdvanceSettings": {
@@ -600,7 +600,7 @@
         },
         "MiniconsolePanel": {
             "Autoscroll": "Autoscroll",
-            "Headline": "Console",
+            "Headline": "Machine Status",
             "HideTemperatures": "Hide temperatures",
             "HideTimelapse": "Hide Timelapse",
             "SendCode": "Send code...",
@@ -739,7 +739,7 @@
             "ALL": "ALL",
             "ControlButtons": "Control buttons",
             "CoordinateFields": "Coordinate fields",
-            "Headline": "Tool Head",
+            "Headline": "Machine Control",
             "PleaseConfigureSteps": "Please configure steps",
             "Position": "Position",
             "PositionOutput": "Position output",
