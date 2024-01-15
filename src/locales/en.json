@@ -593,7 +593,7 @@
             }
         },
         "MacrosPanel": {
-            "Headline": "Macros",
+            "Headline": "Action Buttons",
             "Send": "send"
         },
         "MiniconsolePanel": {
@@ -611,7 +611,7 @@
             "MoreInformation": "more information"
         },
         "MiscellaneousPanel": {
-            "Headline": "Miscellaneous",
+            "Headline": "Additional Controls",
             "Light": {
                 "Blue": "blue",
                 "Green": "green",
@@ -781,7 +781,7 @@
         "G-Code Viewer": "G-Code Viewer",
         "Heightmap": "Heightmap",
         "History": "History",
-        "Machine": "Machine",
+        "Machine": "Config and Updates",
         "Printers": "Printers",
         "Timelapse": "Timelapse",
         "Webcam": "Webcam"

@@ -7,6 +7,27 @@
         card-class="extruder-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
         <template #buttons>
+            <v-menu :offset-y="true" :close-on-content-click="false" left>
+                <template #activator="{ on, attrs }">
+                    <v-btn
+                        small
+                        v-bind="attrs"
+                        class="px-0"
+                        style="min-width: 32px; border-top-left-radius: 0; border-bottom-left-radius: 0"
+                        v-on="on">
+                        <v-icon /><img height="40" src="@/assets/Meteor-01.svg" /><v-icon />
+                        <v-icon>{{ mdiMenuDown }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-list dense>
+                    <v-list-item :disabled="printerIsPrintingOnly">
+                        <v-btn small style="width: 100%" @click="doSend('MET175')">MET175</v-btn>
+                    </v-list-item>
+                    <v-list-item :disabled="printerIsPrintingOnly">
+                        <v-btn small style="width: 100%" @click="doSend('MET285')">MET285</v-btn>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
             <v-menu v-if="showFilamentMacros" :offset-y="true" :close-on-content-click="false" left>
                 <template #activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" v-on="on">
@@ -82,31 +103,31 @@
         </template>
         <!-- TOOL SELECTOR BUTTONS -->
         <extruder-control-panel-tools v-if="showTools && toolchangeMacros.length" />
-        <!-- EXTRUSION FACTOR SLIDER -->
-        <template v-if="showExtrusionFactor">
-            <v-divider v-if="showTools" />
-            <extrusion-factor-settings />
-        </template>
-        <!-- PRESSURE ADVANCE SETTINGS -->
-        <template v-if="showPressureAdvance">
-            <v-divider v-if="showTools || showExtrusionFactor" />
-            <pressure-advance-settings />
-        </template>
         <!-- FIRMWARE RETRACTION SETTINGS -->
         <template v-if="showFirmwareRetraction">
-            <v-divider v-if="showTools || showExtrusionFactor || showPressureAdvance" />
+            <v-divider v-if="showTools " />
             <firmware-retraction-settings />
         </template>
         <!-- EXTRUDER INPUTS AND QUICKSELECTS -->
         <template v-if="showExtruderControl">
-            <v-divider v-if="showTools || showExtrusionFactor || showPressureAdvance || showFirmwareRetraction" />
+            <v-divider v-if="showTools  || showFirmwareRetraction" />
             <extruder-control-panel-control />
+        </template>
+        <!-- EXTRUSION FACTOR SLIDER -->
+        <template v-if="showExtrusionFactor">
+            <v-divider v-if="showTools || showFirmwareRetraction || showExtruderControl" />
+            <extrusion-factor-settings />
+        </template>
+        <!-- PRESSURE ADVANCE SETTINGS -->
+        <template v-if="showPressureAdvance">
+            <v-divider v-if="showTools || showFirmwareRetraction || showExtruderControl || showExtrusionFactor" />
+            <pressure-advance-settings />
         </template>
     </panel>
 </template>
 
 <script lang="ts">
-import { mdiPrinter3dNozzle, mdiDotsVertical } from '@mdi/js'
+import { mdiPrinter3dNozzle, mdiDotsVertical, mdiMenuDown } from '@mdi/js'
 import { Component, Mixins } from 'vue-property-decorator'
 import { PrinterStateMacro } from '@/store/printer/types'
 import BaseMixin from '@/components/mixins/base'
@@ -122,6 +143,7 @@ import ExtruderMixin from '@/components/mixins/extruder'
 export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin, ExtruderMixin) {
     mdiPrinter3dNozzle = mdiPrinter3dNozzle
     mdiDotsVertical = mdiDotsVertical
+    mdiMenuDown = mdiMenuDown
 
     private heatWaitGcodes = ['printer.extruder.can_extrude', 'TEMPERATURE_WAIT', 'M109']
 

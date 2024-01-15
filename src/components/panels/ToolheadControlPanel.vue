@@ -7,27 +7,6 @@
         card-class="toolhead-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
         <template #buttons>
-            <v-menu :offset-y="true" :close-on-content-click="false" left>
-                <template #activator="{ on, attrs }">
-                    <v-btn
-                        small
-                        v-bind="attrs"
-                        class="px-0"
-                        style="min-width: 32px; border-top-left-radius: 0; border-bottom-left-radius: 0"
-                        v-on="on">
-                        <v-icon /><img height="40" src="@/assets/Meteor-01.svg" /><v-icon />
-                        <v-icon>{{ mdiMenuDown }}</v-icon>
-                    </v-btn>
-                </template>
-                <v-list dense>
-                    <v-list-item :disabled="printerIsPrintingOnly">
-                        <v-btn small style="width: 100%" @click="doSend('MET175')">MET175</v-btn>
-                    </v-list-item>
-                    <v-list-item :disabled="printerIsPrintingOnly">
-                        <v-btn small style="width: 100%" @click="doSend('MET285')">MET285</v-btn>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
             <v-menu v-if="showButtons" left offset-y :close-on-content-click="false" class="pa-0">
                 <template #activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" :disabled="['printing'].includes(printer_state)" v-on="on">
