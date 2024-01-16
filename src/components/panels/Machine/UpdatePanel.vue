@@ -7,7 +7,7 @@
             card-class="machine-update-panel"
             :collapsible="true">
             <template #buttons>
-                <v-btn v-if="showUpdateAll">
+                <v-btn
                     text
                     color="primary"
                     small

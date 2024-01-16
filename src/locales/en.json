@@ -519,7 +519,7 @@
             "ThesePackagesCanBeUpgrade": "These system packages can be upgraded:",
             "Unknown": "unknown",
             "Update": "update",
-            "UpdateAll": "Update all components",
+            "UpdateAll": "Update all",
             "UpdateManager": "Update Manager",
             "UpdateWarning": "Update warning: {name}",
             "Upgrade": "upgrade",
