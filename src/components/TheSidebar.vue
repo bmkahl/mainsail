@@ -36,13 +36,6 @@
                 </v-list-item-group>
             </v-list>
         </overlay-scrollbars>
-        <template #append>
-            <v-list-item class="small-list-item mb-2">
-                <v-list-item-icon class="menu-item-icon">
-                    <about-dialog />
-                </v-list-item-icon>
-            </v-list-item>
-        </template>
     </v-navigation-drawer>
 </template>
 

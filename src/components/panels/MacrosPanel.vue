@@ -12,7 +12,7 @@
                         v-for="(macro, index) in macros"
                         :key="'macro_' + index"
                         :macro="macro"
-                        color="primary"
+                        color="secondary"
                         class="mx-1 my-1" />
                 </v-col>
             </v-row>

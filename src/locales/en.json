@@ -351,6 +351,7 @@
         "Jobs": "Jobs",
         "LastModified": "Last Modified",
         "LayerHeight": "Layer Height",
+        "LoadCompleteHistory": "Load complete history",
         "LongestPrinttime": "Longest Print Time",
         "Note": "Note",
         "ObjectHeight": "Object Height",
@@ -381,8 +382,6 @@
         },
         "Table": "Table",
         "TitleExportHistory": "Export History",
-        "TitleRefreshHistory": "Refresh History",
-        "TitleSettings": "Settings",
         "TotalDuration": "Total Time",
         "TotalFilamentUsed": "Total Filament Used",
         "TotalJobs": "Total Jobs",
@@ -486,7 +485,7 @@
         },
         "UpdatePanel": {
             "Abort": "Abort",
-            "AreYouSure": "Are you sure?",
+            "AreYouSure": "Are you ready to update?",
             "CheckForUpdates": "Check for updates",
             "Close": "Close",
             "CommitHistory": "Commit History",
@@ -507,7 +506,7 @@
             "HardRecovery": "Hard Recovery",
             "InitUpdateManager": "The Update Manager has not been initialized yet. This is normal when you start the system for the first time. Please click on the refresh button to initialize all components.",
             "Invalid": "invalid",
-            "IUnderstandTheRisks": "I understand the risks",
+            "IUnderstandTheRisks": "I am ready to update",
             "KlipperUpdateQuestionConfig": "This update may also contain changes to config parameters that would need to be modified in the printer.cfg file, see the change log for details.",
             "KlipperUpdateQuestionFirmware": "This will update the Klipper host software. Control boards running the Klipper firmware may need to be flashed with recompiled firmware before the machine can be put back into service.",
             "LinkToGithub": "Link to GitHub",
@@ -520,7 +519,7 @@
             "ThesePackagesCanBeUpgrade": "These system packages can be upgraded:",
             "Unknown": "unknown",
             "Update": "update",
-            "UpdateAll": "Update all components",
+            "UpdateAll": "Update all",
             "UpdateManager": "Update Manager",
             "UpdateWarning": "Update warning: {name}",
             "Upgrade": "upgrade",
@@ -553,7 +552,7 @@
                 "UnretractExtraLength": "Unretract Extra Length",
                 "UnretractSpeed": "Unretract Speed"
             },
-            "Headline": "Extruder",
+            "Headline": "Tool Head",
             "LoadFilament": "Load Filament",
             "PressureAdvance": "Pressure Advance",
             "PressureAdvanceSettings": {
@@ -594,12 +593,12 @@
             }
         },
         "MacrosPanel": {
-            "Headline": "Macros",
+            "Headline": "Action Buttons",
             "Send": "send"
         },
         "MiniconsolePanel": {
             "Autoscroll": "Autoscroll",
-            "Headline": "Console",
+            "Headline": "Machine Status",
             "HideTemperatures": "Hide temperatures",
             "HideTimelapse": "Hide Timelapse",
             "SendCode": "Send code...",
@@ -612,7 +611,7 @@
             "MoreInformation": "more information"
         },
         "MiscellaneousPanel": {
-            "Headline": "Miscellaneous",
+            "Headline": "Additional Controls",
             "Light": {
                 "Blue": "blue",
                 "Green": "green",
@@ -738,7 +737,7 @@
             "ALL": "ALL",
             "ControlButtons": "Control buttons",
             "CoordinateFields": "Coordinate fields",
-            "Headline": "Toolhead",
+            "Headline": "Machine Control",
             "PleaseConfigureSteps": "Please configure steps",
             "Position": "Position",
             "PositionOutput": "Position output",
@@ -782,7 +781,7 @@
         "G-Code Viewer": "G-Code Viewer",
         "Heightmap": "Heightmap",
         "History": "History",
-        "Machine": "Machine",
+        "Machine": "Config and Updates",
         "Printers": "Printers",
         "Timelapse": "Timelapse",
         "Webcam": "Webcam"
