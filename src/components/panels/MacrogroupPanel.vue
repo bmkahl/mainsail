@@ -58,7 +58,8 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
                 return false
 
             return (
-                (macro.showInStandby && ['Printer Ready', 'cancelled', 'complete', 'error'].includes(this.printer_state)) ||
+                (macro.showInStandby &&
+                    ['Printer Ready', 'cancelled', 'complete', 'error'].includes(this.printer_state)) ||
                 (macro.showInPause && this.printer_state === 'paused') ||
                 (macro.showInPrinting && this.printer_state === 'printing')
             )

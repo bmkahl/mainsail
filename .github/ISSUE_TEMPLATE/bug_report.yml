@@ -7,14 +7,7 @@ body:
       value: >-
         ## ✨ First of all: Thank you for choosing Mainsail! ✨
 
-        #### This form is ONLY for reporting issues and bugs related to Mainsail! 
-
-        * In case you want to make a feature request, please use the following
-        form: [Feature
-        request](https://github.com/mainsail-crew/mainsail/issues/new?assignees=&labels=feature+request&template=feature_request.yml)
-
-        * If you need general support, please visit us on
-        [Discord](https://discord.gg/mainsail)
+        #### This form is ONLY for reporting issues and bugs related to Mainsail!
 
         ---
   - type: input

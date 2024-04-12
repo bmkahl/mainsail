@@ -15,7 +15,9 @@
                         class="px-0"
                         style="min-width: 32px; border-top-left-radius: 0; border-bottom-left-radius: 0"
                         v-on="on">
-                        <v-icon /><img height="40" src="@/assets/Meteor-01.svg" /><v-icon />
+                        <v-icon />
+                        <img height="40" src="@/assets/Meteor-01.svg" />
+                        <v-icon />
                         <v-icon>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
@@ -105,12 +107,12 @@
         <extruder-control-panel-tools v-if="showTools && toolchangeMacros.length" />
         <!-- FIRMWARE RETRACTION SETTINGS -->
         <template v-if="showFirmwareRetraction">
-            <v-divider v-if="showTools " />
+            <v-divider v-if="showTools" />
             <firmware-retraction-settings />
         </template>
         <!-- EXTRUDER INPUTS AND QUICKSELECTS -->
         <template v-if="showExtruderControl">
-            <v-divider v-if="showTools  || showFirmwareRetraction" />
+            <v-divider v-if="showTools || showFirmwareRetraction" />
             <extruder-control-panel-control />
         </template>
         <!-- EXTRUSION FACTOR SLIDER -->

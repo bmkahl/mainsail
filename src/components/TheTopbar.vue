@@ -32,10 +32,10 @@
             <v-btn
                 v-if="printerIsPrintingOnly"
                 tile
-                color= "warning"
+                color="warning"
                 :loading="loadings.includes('statusPrintPause')"
                 class="button-min-width-auto px-3 d-none d-sm-flex save-config-button"
-                icon= "mdiAlertOctagonOutline"
+                icon="mdiAlertOctagonOutline"
                 @click="btnPauseJob">
                 <v-tooltip top>
                     <template #activator="{ on, attrs }">
@@ -47,10 +47,10 @@
             <v-btn
                 v-if="printerIsPrinting && !printerIsPrintingOnly"
                 tile
-                color= "success"
+                color="success"
                 :loading="loadings.includes('statusPrintResume')"
                 class="button-min-width-auto px-3 d-none d-sm-flex save-config-button"
-                icon= "mdiAlertOctagonOutline"
+                icon="mdiAlertOctagonOutline"
                 @click="btnResumeJob">
                 <v-tooltip top>
                     <template #activator="{ on, attrs }">
@@ -62,10 +62,10 @@
             <v-btn
                 v-if="printerIsPrinting"
                 tile
-                color= "error"
+                color="error"
                 :loading="loadings.includes('statusPrintCancel')"
                 class="button-min-width-auto px-3 d-none d-sm-flex save-config-button"
-                icon= "mdiStop"
+                icon="mdiStop"
                 @click="btnCancelJob">
                 <v-tooltip top>
                     <template #activator="{ on, attrs }">
@@ -74,7 +74,6 @@
                     <span>{{ $t('Panels.StatusPanel.CancelPrint') }}</span>
                 </v-tooltip>
             </v-btn>
-
 
             <v-btn
                 v-if="showSaveConfigButton"
@@ -166,7 +165,16 @@ import PrinterSelector from '@/components/ui/PrinterSelector.vue'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import TheNotificationMenu from '@/components/notifications/TheNotificationMenu.vue'
 import { topbarHeight } from '@/store/variables'
-import { mdiAlertOctagonOutline, mdiContentSave, mdiFileUpload, mdiClose, mdiCloseThick, mdiPause, mdiPlay, mdiStop } from '@mdi/js'
+import {
+    mdiAlertOctagonOutline,
+    mdiContentSave,
+    mdiFileUpload,
+    mdiClose,
+    mdiCloseThick,
+    mdiPause,
+    mdiPlay,
+    mdiStop,
+} from '@mdi/js'
 
 type uploadSnackbar = {
     status: boolean
@@ -304,38 +312,38 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     }
 
     get toolbarButtons() {
-                return [
-                    {
-                        text: this.$t('Panels.StatusPanel.PausePrint'),
-                        color: 'warning',
-                        icon: mdiPause,
-                        loadingName: 'statusPrintPause',
-                        status: () => ['printing'].includes(this.printer_state),
-                        click: this.btnPauseJob,
-                    },
-                    {
-                        text: this.$t('Panels.StatusPanel.ResumePrint'),
-                        color: 'success',
-                        icon: mdiPlay,
-                        loadingName: 'statusPrintResume',
-                        status: () => ['paused'].includes(this.printer_state),
-                        click: this.btnResumeJob,
-                    },
-                    {
-                        text: this.$t('Panels.StatusPanel.CancelPrint'),
-                        color: 'error',
-                        icon: mdiStop,
-                        loadingName: 'statusPrintCancel',
-                        status: () => {
-                            if (this.$store.state.gui.uiSettings.displayCancelPrint)
-                                return ['paused', 'printing'].includes(this.printer_state)
+        return [
+            {
+                text: this.$t('Panels.StatusPanel.PausePrint'),
+                color: 'warning',
+                icon: mdiPause,
+                loadingName: 'statusPrintPause',
+                status: () => ['printing'].includes(this.printer_state),
+                click: this.btnPauseJob,
+            },
+            {
+                text: this.$t('Panels.StatusPanel.ResumePrint'),
+                color: 'success',
+                icon: mdiPlay,
+                loadingName: 'statusPrintResume',
+                status: () => ['paused'].includes(this.printer_state),
+                click: this.btnResumeJob,
+            },
+            {
+                text: this.$t('Panels.StatusPanel.CancelPrint'),
+                color: 'error',
+                icon: mdiStop,
+                loadingName: 'statusPrintCancel',
+                status: () => {
+                    if (this.$store.state.gui.uiSettings.displayCancelPrint)
+                        return ['paused', 'printing'].includes(this.printer_state)
 
-                            return ['paused'].includes(this.printer_state)
-                        },
-                        click: this.btnCancelJob,
-                    },
-                ]
-            }
+                    return ['paused'].includes(this.printer_state)
+                },
+                click: this.btnCancelJob,
+            },
+        ]
+    }
 
     mounted() {
         //this.naviDrawer = this.$vuetify.breakpoint.lgAndUp
