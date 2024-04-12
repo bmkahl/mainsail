@@ -43,7 +43,7 @@ export const actions: ActionTree<ServerState, RootState> = {
                 client_name: 'mainsail',
                 version: rootState.packageVersion,
                 type: 'web',
-                url: 'https://github.com/mainsail-crew/mainsail',
+                url: 'https://github.com/lulzbot3d/mainsail',
             },
             { action: 'server/setConnectionId' }
         )
