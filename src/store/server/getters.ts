@@ -13,12 +13,8 @@ export const getters: GetterTree<ServerState, any> = {
                 const date = events.length ? events[0].date : new Date()
                 let message = ''
 
-                message += '- Type <a class="command text--blue">HELP</a> to get a list of available commands.\n'
-                message += '- Click on the "?" button to get a searchable list.\n'
-                message += '- Commands in the console are clickable and will be placed into the input field.\n'
-                message +=
-                    '- Use the tab key to complete your inputs. If there are several options, a list is displayed.\n'
-                message += '- Use the ⇵ arrow keys to navigate through the previous entries.\n'
+                message += '<a class="command text--green">LulzBot Mini 3 Ready!</a> \n'
+                message += 'Upload or select a file from \n above to start your print'
 
                 events.unshift({
                     date: date,
