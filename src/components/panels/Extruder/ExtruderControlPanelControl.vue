@@ -62,13 +62,14 @@
                     <!-- EXTRUDE AND RETRACT BUTTON LARGE SIZED PANEL -->
                     <v-col v-if="el.is.large" class="col-3 d-flex align-center flex-column justify-center">
                         <!-- RETRACT -->
-                        <v-tooltip left :disabled="extrudePossible && !tooLargeExtrusion" color="secondary">
+                        <v-tooltip left :disabled="extrudePossible && !tooLargeExtrusion" color="primary">
                             <template #activator="{ on }">
                                 <div class="mb-4" v-on="on">
                                     <v-btn
                                         :loading="loadings.includes('btnRetract')"
                                         :disabled="!extrudePossible || tooLargeExtrusion || printerIsPrintingOnly"
                                         small
+                                        color="#7b7b7b"
                                         class="_btn-extruder-cmd"
                                         @click="sendRetract()">
                                         <v-icon small class="mr-1">{{ mdiArrowUpBold }}</v-icon>
@@ -96,6 +97,7 @@
                                         :loading="loadings.includes('btnDetract')"
                                         :disabled="!extrudePossible || tooLargeExtrusion || printerIsPrintingOnly"
                                         small
+                                        color="#7b7b7b"
                                         class="_btn-extruder-cmd"
                                         @click="sendExtrude()">
                                         <v-icon small class="mr-1">{{ mdiArrowDownBold }}</v-icon>
