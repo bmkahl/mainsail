@@ -11,9 +11,10 @@
                 <template #activator="{ on, attrs }">
                     <v-btn
                         small
+                        color='#8b8b8b'
                         v-bind="attrs"
                         class="px-0"
-                        style="min-width: 32px; border-top-left-radius: 0; border-bottom-left-radius: 0"
+                        style="min-width: 32px;"
                         v-on="on">
                         <v-icon />
                         <img height="40" src="@/assets/Meteor-01.svg" />
@@ -23,10 +24,10 @@
                 </template>
                 <v-list dense>
                     <v-list-item :disabled="printerIsPrintingOnly">
-                        <v-btn small style="width: 100%" @click="doSend('MET175')">MET175</v-btn>
+                        <v-btn small color="#7b7b7b" style="width: 100%" @click="doSend('MET175')">MET175</v-btn>
                     </v-list-item>
                     <v-list-item :disabled="printerIsPrintingOnly">
-                        <v-btn small style="width: 100%" @click="doSend('MET285')">MET285</v-btn>
+                        <v-btn small color="#7b7b7b" style="width: 100%" @click="doSend('MET285')">MET285</v-btn>
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -40,13 +41,13 @@
                     <!-- FILAMENT UNLOAD -->
                     <v-list-item v-if="unloadFilamentMacro">
                         <v-tooltip top :disabled="canExecuteUnloadMacro" color="secondary">
-                            <template #activator="{ on }">
+                            <template color='#7b7b7b' #activator="{ on }">
                                 <div v-on="on">
                                     <macro-button
                                         :macro="unloadFilamentMacro"
                                         :alias="$t('Panels.ExtruderControlPanel.UnloadFilament')"
                                         :disabled="!canExecuteUnloadMacro || printerIsPrintingOnly"
-                                        color="#272727" />
+                                        color="#7b7b7b" />
                                 </div>
                             </template>
                             <span>
@@ -64,7 +65,7 @@
                                         :macro="loadFilamentMacro"
                                         :alias="$t('Panels.ExtruderControlPanel.LoadFilament')"
                                         :disabled="!canExecuteLoadMacro || printerIsPrintingOnly"
-                                        color="#272727" />
+                                        color="#7b7b7b" />
                                 </div>
                             </template>
                             <span>
@@ -75,14 +76,14 @@
                     </v-list-item>
                     <!-- FILAMENT PURGE -->
                     <v-list-item v-if="purgeFilamentMacro">
-                        <v-tooltip top :disabled="canExecutePurgeMacro" color="secondary">
+                        <v-tooltip top :disabled="canExecutePurgeMacro" color="primary">
                             <template #activator="{ on }">
                                 <div v-on="on">
                                     <macro-button
                                         :macro="purgeFilamentMacro"
                                         :alias="$t('Panels.ExtruderControlPanel.PurgeFilament')"
                                         :disabled="!canExecutePurgeMacro || printerIsPrintingOnly"
-                                        color="#272727" />
+                                        color="#7b7b7b" />
                                 </div>
                             </template>
                             <span>
@@ -97,7 +98,7 @@
                             :macro="cleanNozzleMacro"
                             :alias="$t('Panels.ExtruderControlPanel.CleanNozzle')"
                             :disabled="printerIsPrintingOnly"
-                            color="#272727" />
+                            color="#7b7b7b" />
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -204,7 +205,12 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get showFilamentMacros(): boolean {
-        return this.loadFilamentMacro !== undefined || this.unloadFilamentMacro !== undefined
+        return (
+            this.loadFilamentMacro !== undefined ||
+            this.unloadFilamentMacro !== undefined ||
+            this.purgeFilamentMacro !== undefined ||
+            this.cleanNozzleMacro !== undefined
+        )
     }
 
     get showTools(): boolean {

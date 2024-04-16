@@ -16,7 +16,7 @@
                     <v-col>
                         <v-row dense class="mb-1">
                             <v-col cols="3"></v-col>
-                            <v-col cols="3">
+                            <v-col cols="3"> <!-- Y Up /*:color="homedAxes.includes('y') ? 'success' : 'warning'"*/-->
                                 <v-btn
                                     class="btnMinWidthAuto fill-width"
                                     :disabled="
@@ -25,12 +25,13 @@
                                         selectedCrossStep === undefined ||
                                         ['printing'].includes(printer_state)
                                     "
+                                    :color="homedAxes.includes('y') ? '#7b7b7b' : ''"
                                     @click="doSendMove(`Y${reverseY ? '-' : '+'}${stepSize}`, feedrateXY)">
                                     <v-icon>{{ mdiChevronUp }}</v-icon>
                                 </v-btn>
                             </v-col>
                             <v-col cols="3"></v-col>
-                            <v-col cols="3">
+                            <v-col cols="3"> <!-- Z Up -->
                                 <v-btn
                                     class="btnMinWidthAuto fill-width"
                                     :disabled="
@@ -39,13 +40,14 @@
                                         selectedCrossStep === undefined ||
                                         ['printing'].includes(printer_state)
                                     "
+                                    :color="homedAxes.includes('z') ? '#7b7b7b' : ''"
                                     @click="doSendMove(`Z${reverseZ ? '-' : '+'}${stepSize}`, feedrateZ)">
                                     <v-icon>{{ mdiChevronUp }}</v-icon>
                                 </v-btn>
                             </v-col>
                         </v-row>
                         <v-row dense>
-                            <v-col cols="3" class="p-rel">
+                            <v-col cols="3" class="p-rel"> <!-- X left -->
                                 <v-btn
                                     class="btnMinWidthAuto fill-width p-abs"
                                     style="top: -50%; width: calc(100% - 8px)"
@@ -55,11 +57,12 @@
                                         selectedCrossStep === undefined ||
                                         ['printing'].includes(printer_state)
                                     "
+                                    :color="homedAxes.includes('x') ? '#7b7b7b' : ''"
                                     @click="doSendMove(`X${!reverseX ? '-' : '+'}${stepSize}`, feedrateXY)">
                                     <v-icon>{{ mdiChevronLeft }}</v-icon>
                                 </v-btn>
                             </v-col>
-                            <v-col cols="3">
+                            <v-col cols="3"> <!-- Y Down -->
                                 <v-btn
                                     class="btnMinWidthAuto fill-width"
                                     :disabled="
@@ -68,11 +71,12 @@
                                         selectedCrossStep === undefined ||
                                         ['printing'].includes(printer_state)
                                     "
+                                    :color="homedAxes.includes('y') ? '#7b7b7b' : ''"
                                     @click="doSendMove(`Y${!reverseY ? '-' : '+'}${stepSize}`, feedrateXY)">
                                     <v-icon>{{ mdiChevronDown }}</v-icon>
                                 </v-btn>
                             </v-col>
-                            <v-col cols="3" class="p-rel">
+                            <v-col cols="3" class="p-rel"> <!-- X Right -->
                                 <v-btn
                                     class="btnMinWidthAuto fill-width p-abs"
                                     style="top: -50%; width: calc(100% - 8px)"
@@ -82,11 +86,12 @@
                                         selectedCrossStep === undefined ||
                                         ['printing'].includes(printer_state)
                                     "
+                                    :color="homedAxes.includes('x') ? '#7b7b7b' : ''"
                                     @click="doSendMove(`X${reverseX ? '-' : '+'}${stepSize}`, feedrateXY)">
                                     <v-icon>{{ mdiChevronRight }}</v-icon>
                                 </v-btn>
                             </v-col>
-                            <v-col cols="3">
+                            <v-col cols="3"> <!-- Z Down -->
                                 <v-btn
                                     class="btnMinWidthAuto fill-width"
                                     :disabled="
@@ -95,6 +100,7 @@
                                         selectedCrossStep === undefined ||
                                         ['printing'].includes(printer_state)
                                     "
+                                    :color="homedAxes.includes('z') ? '#7b7b7b' : ''"
                                     @click="doSendMove(`Z${!reverseZ ? '-' : '+'}${stepSize}`, feedrateZ)">
                                     <v-icon>{{ mdiChevronDown }}</v-icon>
                                 </v-btn>
@@ -109,7 +115,7 @@
                                     <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeAll')"
-                                        :color="homedAxes.includes('xyz') ? 'secondary' : 'success'"
+                                        :color="homedAxes.includes('xyz') ? '' : '#7b7b7b'"
                                         height="30"
                                         tile
                                         class="w-100"
@@ -148,7 +154,7 @@
                                     <v-btn
                                         v-else
                                         :disabled="['printing'].includes(printer_state)"
-                                        :color="homedAxes !== '' ? 'secondary' : 'success'"
+                                        :color="homedAxes == '' ? '' : '#7b7b7b'"
                                         height="30"
                                         dense
                                         tile
@@ -164,7 +170,7 @@
                                     <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeX')"
-                                        :color="homedAxes.includes('x') ? 'secondary' : 'success'"
+                                        :color="homedAxes.includes('xyz') ? '' : '#7b7b7b'"
                                         tile
                                         height="30"
                                         class="btnMinWidthAuto w-100"
@@ -176,7 +182,7 @@
                                     <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeY')"
-                                        :color="homedAxes.includes('y') ? 'secondary' : 'success'"
+                                        :color="homedAxes.includes('y') ? '' : '#7b7b7b'"
                                         tile
                                         height="30"
                                         class="btnMinWidthAuto w-100"
@@ -188,7 +194,7 @@
                                     <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeY')"
-                                        :color="homedAxes.includes('xy') ? 'secondary' : 'success'"
+                                        :color="homedAxes.includes('xy') ? '' : '#7b7b7b'"
                                         tile
                                         height="30"
                                         class="btnMinWidthAuto w-100"
@@ -200,7 +206,7 @@
                                     <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeZ')"
-                                        :color="homedAxes.includes('z') ? 'secondary' : 'success'"
+                                        :color="homedAxes.includes('z') ? '' : '#7b7b7b'"
                                         tile
                                         height="30"
                                         class="btnMinWidthAuto w-100"
@@ -300,7 +306,7 @@
                                     <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeY')"
-                                        :color="homedAxes.includes('xy') ? 'secondary' : 'success'"
+                                        :color="homedAxes.includes('xy') ? 'secondary' : '#59d313'"
                                         tile
                                         height="30"
                                         class="btnMinWidthAuto w-100"
@@ -312,7 +318,7 @@
                                     <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeZ')"
-                                        :color="homedAxes.includes('z') ? 'secondary' : 'success'"
+                                        :color="homedAxes.includes('z') ? 'secondary' : '#59d313'"
                                         tile
                                         height="30"
                                         class="btnMinWidthAuto w-100"

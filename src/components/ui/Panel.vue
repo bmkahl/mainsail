@@ -5,7 +5,7 @@
         <v-toolbar
             flat
             dense
-            :color="toolbarColor"
+            :color="logoColor"
             :class="getToolbarClass"
             :height="panelToolbarHeight"
             class="panel-toolbar"
@@ -84,6 +84,10 @@ export default class Panel extends Mixins(BaseMixin) {
 
     get additionalStyle() {
         return this.$vuetify.theme.dark ? '' : 'border-bottom: 1px solid #A8A8A8'
+    }
+
+    get logoColor(): string {
+        return this.$store.state.gui.uiSettings.logo
     }
 }
 </script>
