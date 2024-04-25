@@ -25,6 +25,13 @@
                     :accept="gcodeInputFileAccept.join(', ')"
                     style="display: none"
                     @change="uploadAndStart" />
+                <input
+                    ref="fileUpload"
+                    type="file"
+                    :accept="gcodeInputFileAccept.join(', ')"
+                    style="display: none"
+                    multiple
+                    @change="uploadFile" />
                 <v-btn
                     v-for="button in filteredToolbarButtons"
                     :key="button.loadingName"
@@ -146,6 +153,7 @@ import {
     mdiLayersPlus,
     mdiDotsVertical,
     mdiFileUpload,
+    mdiUpload,
 } from '@mdi/js'
 import { PrinterStateMacro } from '@/store/printer/types'
 
@@ -178,10 +186,12 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     mdiDotsVertical = mdiDotsVertical
     mdiAlertOutline = mdiAlertOutline
     mdiFileUpload = mdiFileUpload
+    mdiUpload = mdiUpload
 
     declare $refs: {
         bigThumbnail: any
         fileUploadAndStart: HTMLFormElement
+        fileUpload: HTMLInputElement
     }
 
     boolShowObjects = false
@@ -319,12 +329,12 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 click: this.btnReprintJob,
             },
             {
-                text: this.$t('App.TopBar.UploadPrint'),
+                text: this.$t('Files.UploadNewGcode'),
                 color: 'primary',
-                icon: mdiFileUpload,
-                loadingName: 'App.TopBar.UploadPrint',
+                icon: mdiUpload,
+                loadingName: 'Files.UploadNewGcode',
                 status: () => ['standby', 'error', 'complete', 'cancelled'].includes(this.printer_state),
-                click: this.btnUploadAndStart,
+                click: this.clickUploadButton,
             },
         ]
     }
@@ -400,6 +410,13 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return this.$route.fullPath
     }
 
+    get currentPath() {
+        const path = this.$store.state.gui.view.gcodefiles.currentPath
+        if (path === 'gcodes') return ''
+
+        return path
+    }
+
     btnUploadAndStart() {
         this.$refs.fileUploadAndStart.click()
     }
@@ -421,6 +438,35 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
             this.$refs.fileUploadAndStart.value = ''
             if (this.currentPage !== '/') await this.$router.push('/')
+        }
+    }
+
+    clickUploadButton() {
+        this.$refs.fileUpload.click()
+    }
+
+    async uploadFile() {
+        if (this.$refs.fileUpload.files?.length) {
+            const files = [...this.$refs.fileUpload.files]
+            this.$refs.fileUpload.value = ''
+
+            await this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
+            await this.$store.dispatch('files/uploadSetCurrentNumber', 0)
+            await this.$store.dispatch('files/uploadSetMaxNumber', this.$refs.fileUpload.files.length)
+            for (const file of files) {
+                await this.$store.dispatch('files/uploadIncrementCurrentNumber')
+                const path = this.currentPath.slice(0, 1) === '/' ? this.currentPath.slice(1) : this.currentPath
+                const result = await this.$store.dispatch('files/uploadFile', {
+                    file,
+                    path,
+                    root: 'gcodes',
+                })
+
+                if (result !== false)
+                    this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: result }).toString())
+            }
+
+            await this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
         }
     }
 

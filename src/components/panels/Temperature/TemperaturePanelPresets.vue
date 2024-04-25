@@ -39,7 +39,6 @@
             :text="$vuetify.breakpoint.mdAndUp"
             :disabled="['printing', 'paused'].includes(printer_state)"
             tile
-            color="primary"
             @click="cooldown">
             <v-icon small>{{ mdiSnowflake }}</v-icon>
             <span class="d-none ml-1 d-md-inline">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
