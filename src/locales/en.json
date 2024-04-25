@@ -726,6 +726,7 @@
             "AutoscaleChart": "Autoscale Chart",
             "Avg": "Avg",
             "Cooldown": "Cooldown",
+            "Preheat": "Preheat",
             "Current": "Current",
             "Dataset": {
                 "Power": "PWM-power",

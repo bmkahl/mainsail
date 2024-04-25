@@ -19,6 +19,19 @@
                     class="mr-3" />
             </template>
             <template #buttons>
+                <input
+                    ref="fileUploadAndStart"
+                    type="file"
+                    :accept="gcodeInputFileAccept.join(', ')"
+                    style="display: none"
+                    @change="uploadAndStart" />
+                <input
+                    ref="fileUpload"
+                    type="file"
+                    :accept="gcodeInputFileAccept.join(', ')"
+                    style="display: none"
+                    multiple
+                    @change="uploadFile" />
                 <v-btn
                     v-for="button in filteredToolbarButtons"
                     :key="button.loadingName"
@@ -124,6 +137,8 @@ import StatusPanelExcludeObject from '@/components/panels/Status/ExcludeObject.v
 import StatusPanelPrintstatusThumbnail from '@/components/panels/Status/PrintstatusThumbnail.vue'
 import StatusPanelPauseAtLayerDialog from '@/components/panels/Status/PauseAtLayerDialog.vue'
 import Panel from '@/components/ui/Panel.vue'
+import axios, { AxiosProgressEvent } from 'axios'
+import { validGcodeExtensions } from '@/store/variables'
 import {
     mdiAlertOutline,
     mdiBroom,
@@ -137,8 +152,19 @@ import {
     mdiCloseCircle,
     mdiLayersPlus,
     mdiDotsVertical,
+    mdiFileUpload,
+    mdiUpload,
 } from '@mdi/js'
 import { PrinterStateMacro } from '@/store/printer/types'
+
+type uploadSnackbar = {
+    status: boolean
+    filename: string
+    percent: number
+    speed: number
+    total: number
+    cancelTokenSource: any
+}
 
 @Component({
     components: {
@@ -159,9 +185,13 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     mdiCloseCircle = mdiCloseCircle
     mdiDotsVertical = mdiDotsVertical
     mdiAlertOutline = mdiAlertOutline
+    mdiFileUpload = mdiFileUpload
+    mdiUpload = mdiUpload
 
     declare $refs: {
         bigThumbnail: any
+        fileUploadAndStart: HTMLFormElement
+        fileUpload: HTMLInputElement
     }
 
     boolShowObjects = false
@@ -169,6 +199,21 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     activeTab = 'files'
     lastFilename = ''
+
+    uploadSnackbar: uploadSnackbar = {
+        status: false,
+        filename: '',
+        percent: 0,
+        speed: 0,
+        total: 0,
+        cancelTokenSource: null,
+    }
+
+    get gcodeInputFileAccept() {
+        if (this.isIOS) return []
+
+        return validGcodeExtensions
+    }
 
     get jobs() {
         return this.$store.getters['server/jobQueue/getJobs']
@@ -283,6 +328,14 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 status: () => ['error', 'complete', 'cancelled'].includes(this.printer_state),
                 click: this.btnReprintJob,
             },
+            {
+                text: this.$t('Files.UploadNewGcode'),
+                color: 'primary',
+                icon: mdiUpload,
+                loadingName: 'Files.UploadNewGcode',
+                status: () => ['standby', 'error', 'complete', 'cancelled'].includes(this.printer_state),
+                click: this.clickUploadButton,
+            },
         ]
     }
 
@@ -351,6 +404,107 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     get displayPauseAtLayerButton() {
         return this.layer_count !== null && (this.existsSetPauseAtLayer || this.existsSetPauseNextLayer)
+    }
+
+    get currentPage() {
+        return this.$route.fullPath
+    }
+
+    get currentPath() {
+        const path = this.$store.state.gui.view.gcodefiles.currentPath
+        if (path === 'gcodes') return ''
+
+        return path
+    }
+
+    btnUploadAndStart() {
+        this.$refs.fileUploadAndStart.click()
+    }
+
+    async uploadAndStart() {
+        if (this.$refs.fileUploadAndStart?.files.length) {
+            await this.$store.dispatch('socket/addLoading', { name: 'btnUploadAndStart' })
+            let successFiles = []
+            for (const file of this.$refs.fileUploadAndStart?.files || []) {
+                const result = await this.doUploadAndStart(file)
+                successFiles.push(result)
+            }
+
+            await this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
+            for (const file of successFiles) {
+                const text = this.$t('App.TopBar.UploadOfFileSuccessful', { file: file }).toString()
+                this.$toast.success(text)
+            }
+
+            this.$refs.fileUploadAndStart.value = ''
+            if (this.currentPage !== '/') await this.$router.push('/')
+        }
+    }
+
+    clickUploadButton() {
+        this.$refs.fileUpload.click()
+    }
+
+    async uploadFile() {
+        if (this.$refs.fileUpload.files?.length) {
+            const files = [...this.$refs.fileUpload.files]
+            this.$refs.fileUpload.value = ''
+
+            await this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
+            await this.$store.dispatch('files/uploadSetCurrentNumber', 0)
+            await this.$store.dispatch('files/uploadSetMaxNumber', this.$refs.fileUpload.files.length)
+            for (const file of files) {
+                await this.$store.dispatch('files/uploadIncrementCurrentNumber')
+                const path = this.currentPath.slice(0, 1) === '/' ? this.currentPath.slice(1) : this.currentPath
+                const result = await this.$store.dispatch('files/uploadFile', {
+                    file,
+                    path,
+                    root: 'gcodes',
+                })
+
+                if (result !== false)
+                    this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: result }).toString())
+            }
+
+            await this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
+        }
+    }
+
+    doUploadAndStart(file: File) {
+        const formData = new FormData()
+        const filename = file.name
+
+        this.uploadSnackbar.filename = filename
+        this.uploadSnackbar.status = true
+        this.uploadSnackbar.percent = 0
+        this.uploadSnackbar.speed = 0
+
+        formData.append('file', file, filename)
+        formData.append('print', 'true')
+
+        return new Promise((resolve) => {
+            this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source()
+            axios
+                .post(this.apiUrl + '/server/files/upload', formData, {
+                    cancelToken: this.uploadSnackbar.cancelTokenSource.token,
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+                        this.uploadSnackbar.percent = (progressEvent.progress ?? 0) * 100
+                        this.uploadSnackbar.speed = progressEvent.rate ?? 0
+                        this.uploadSnackbar.total = progressEvent.total ?? 0
+                    },
+                })
+                .then((result) => {
+                    this.uploadSnackbar.status = false
+                    resolve(result.data.result)
+                })
+                .catch(() => {
+                    this.uploadSnackbar.status = false
+                    this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
+                    const text = this.$t('App.TopBar.CannotUploadTheFile').toString()
+                    this.$toast.error(text)
+                })
+        })
     }
 
     mounted() {

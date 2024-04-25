@@ -37,11 +37,22 @@
             v-else
             :icon="$vuetify.breakpoint.smAndDown"
             :text="$vuetify.breakpoint.mdAndUp"
+            :disabled="['printing', 'paused'].includes(printer_state)"
             tile
-            color="primary"
             @click="cooldown">
             <v-icon small>{{ mdiSnowflake }}</v-icon>
             <span class="d-none ml-1 d-md-inline">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
+        </v-btn>
+        <v-btn
+            v-if="true"
+            :icon="$vuetify.breakpoint.smAndDown"
+            :text="$vuetify.breakpoint.mdAndUp"
+            :disabled="['printing', 'paused'].includes(printer_state)"
+            tile
+            color="primary"
+            @click="doSend('SET_HEATER_TEMPERATURE HEATER=extruder TARGET=180 \n SET_HEATER_TEMPERATURE HEATER=heater_bed TARGET=60')">
+            <v-icon small>{{ mdiFire }}</v-icon>
+            <span class="d-none ml-1 d-md-inline">{{ $t('Panels.TemperaturePanel.Preheat') }}</span>
         </v-btn>
     </div>
 </template>
@@ -103,6 +114,11 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
     cooldown(): void {
         this.$store.dispatch('server/addEvent', { message: this.cooldownGcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: this.cooldownGcode })
+    }
+
+    doSend(gcode: string) {
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 }
 </script>
