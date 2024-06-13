@@ -25,7 +25,7 @@
             </v-list>
             <v-divider class="_fix_transparency" />
             <v-list dense class="py-0">
-                <v-list-item link @click="cooldown">
+                <v-list-item link @click="btnCoolDown">
                     <div class="d-flex align-center _preset-title">
                         <v-icon small color="primary" class="mr-1">{{ mdiSnowflake }}</v-icon>
                         <span class="primary--text">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
@@ -39,10 +39,12 @@
             :text="$vuetify.breakpoint.mdAndUp"
             :disabled="['printing', 'paused'].includes(printer_state)"
             tile
-            @click="cooldown">
+            color="primary"
+            @click="btnCoolDown">
             <v-icon small>{{ mdiSnowflake }}</v-icon>
             <span class="d-none ml-1 d-md-inline">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
         </v-btn>
+        <cool-down-dialog :show-dialog="showCoolDownDialog" @close="showCoolDownDialog = false" />
         <v-btn
             v-if="true"
             :icon="$vuetify.breakpoint.smAndDown"
@@ -62,13 +64,19 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
-import { mdiFire, mdiMenuDown, mdiSnowflake } from '@mdi/js'
+import { mdiFire, mdiMenuDown, mdiSnowflake, mdiCloseThick } from '@mdi/js'
+import CoolDownDialog from '@/components/dialogs/CoolDownDialog.vue'
 
-@Component
+@Component({
+    components: { CoolDownDialog },
+})
 export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
     mdiFire = mdiFire
     mdiMenuDown = mdiMenuDown
     mdiSnowflake = mdiSnowflake
+    mdiCloseThick = mdiCloseThick
+
+    showCoolDownDialog = false
 
     get presets(): GuiPresetsStatePreset[] {
         return this.$store.getters['gui/presets/getPresets'] ?? []
@@ -76,6 +84,10 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
 
     get cooldownGcode(): string {
         return this.$store.getters['gui/presets/getCooldownGcode']
+    }
+
+    get confirmOnCoolDown(): boolean {
+        return this.$store.state.gui.uiSettings.confirmOnCoolDown
     }
 
     preheat(preset: GuiPresetsStatePreset): void {
@@ -111,7 +123,17 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
         }
     }
 
+    btnCoolDown(): void {
+        if (this.confirmOnCoolDown) {
+            this.showCoolDownDialog = true
+            return
+        }
+
+        this.cooldown()
+    }
+
     cooldown(): void {
+        this.showCoolDownDialog = false
         this.$store.dispatch('server/addEvent', { message: this.cooldownGcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: this.cooldownGcode })
     }
